@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 🛡️ STRICT SESSION & GATE PASS GUARD -->
+    <script>
+        if (localStorage.getItem("authPassed") !== "true" || sessionStorage.getItem("activeSession") !== "valid") {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.replace("index.html");
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Verification & Login | Gautam Teaching Centre</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Path Linked to css/style.css -->
+    <link rel="stylesheet" href="css/style.css" onerror="this.onerror=null;this.href='style.css';">
+
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-deep: #0369a1;
+            --primary-glow: rgba(2, 132, 199, 0.22);
+            --accent: #4f46e5;
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --border-subtle: #e2e8f0;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-heading);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glowing Light Orbs */
+        .ambient-glow-1 {
+            position: fixed;
+            width: 440px;
+            height: 440px;
+            background: radial-gradient(circle, rgba(199, 210, 254, 0.5) 0%, transparent 70%);
+            top: -90px;
+            left: -90px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: pulseSlow 7s ease-in-out infinite alternate;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(186, 230, 253, 0.5) 0%, transparent 70%);
+            bottom: -70px;
+            right: -70px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: pulseSlow 5.5s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes pulseSlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.65; }
+            100% { transform: scale(1.14) translate(25px, 20px); opacity: 0.95; }
+        }
+
+        .login-card-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 470px;
+            background: var(--surface);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 28px;
+            padding: 38px 30px;
+            text-align: center;
+            box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.04);
+        }
+
+        .login-card-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 20%; right: 20%; height: 3.5px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .avatar-wrap {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 14px;
+            background: #f0f9ff;
+            border: 1.5px solid #bae6fd;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            box-shadow: 0 8px 18px -4px var(--primary-glow);
+            transition: transform 0.2s ease;
+        }
+
+        .avatar-wrap:hover {
+            transform: scale(1.05);
+        }
+
+        .brand-heading {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-heading);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .sub-tagline {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 6px;
+            padding-left: 2px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-heading);
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .field-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+        }
+
+        .field-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* 🌐 LANGUAGE DROPDOWN SELECT STYLING */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .field-select {
+            width: 100%;
+            padding: 14px 44px 14px 18px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 14px;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--text-heading);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: all 0.25s ease;
+        }
+
+        .field-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+        }
+
+        .field-select option {
+            background-color: #ffffff;
+            color: #0f172a;
+            font-size: 14.5px;
+            font-weight: 600;
+            padding: 12px;
+        }
+
+        .field-select option:disabled {
+            color: #94a3b8;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 800;
+            transition: transform 0.2s ease;
+        }
+
+        .select-wrapper:focus-within .select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .btn-submit {
+            width: 100%;
+            margin-top: 14px;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px -4px rgba(37, 99, 235, 0.6);
+        }
+
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99998;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.85s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #loadingText {
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        #dangerModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            padding: 20px;
+        }
+
+        .danger-card {
+            background: #ffffff;
+            border-radius: 24px;
+            max-width: 440px;
+            width: 100%;
+            padding: 34px 26px;
+            text-align: center;
+            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2);
+            border-top: 4.5px solid var(--warning);
+        }
+
+        .passcode-input {
+            width: 100%;
+            padding: 14px;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            color: #0f172a;
+            font-size: 15px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            outline: none;
+        }
+
+        .btn-unlock {
+            flex: 1;
+            padding: 13px;
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+        }
+
+        .btn-cancel {
+            padding: 13px 20px;
+            background: #e2e8f0;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        #securityToast {
+            position: fixed;
+            bottom: 24px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 13.5px;
+            font-weight: 700;
+            z-index: 100000;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(15px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Ambient Glowing Light Orbs -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <div id="securityToast">Please enter your candidate credentials.</div>
+
+    <!-- Re-Test Authorization Gate Modal -->
+    <div id="dangerModal">
+        <div class="danger-card">
+            <div style="font-size:34px; margin-bottom:12px;">🔒</div>
+            <h2 style="font-family:'Outfit', sans-serif; font-size:21px; margin-bottom:8px; color:#0f172a; font-weight:800;">Re-Test Authorization Required</h2>
+            <p id="retestModalDesc" style="color:var(--text-muted); font-size:13.5px; margin-bottom:20px; line-height:1.6;">
+                A completed test submission is already recorded for this Roll Number today. Invigilator authorization is required for a re-attempt.
+            </p>
+            <input type="password" id="teacherPassInput" class="passcode-input" placeholder="INVIGILATOR PASSCODE" autocomplete="off">
+            <div id="retestPassError" style="color:var(--danger); font-size:12px; font-weight:600; margin-bottom:16px; display:none;">Invalid passcode! Please verify with your teacher.</div>
+            
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-unlock" onclick="verifyTeacherPassword()">
+                    Authorize & Proceed 🚀
+                </button>
+                <button type="button" class="btn-cancel" onclick="dismissDangerModal()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Loading Spinner -->
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="loadingText">Verifying credentials with testing server... Please wait ⏳</div>
+    </div>
+
+    <!-- Main Candidate Form Card -->
+    <main class="login-card-container">
+        <div class="avatar-wrap">👨‍🎓</div>
+        <h1 class="brand-heading">Candidate Authentication</h1>
+        <p class="sub-tagline">Gautam Teaching Centre • 2026</p>
+
+        <form onsubmit="handleLogin(event)" class="login-form">
+            <div class="form-group">
+                <label class="field-label" for="studentName">Candidate Full Name</label>
+                <input type="text" id="studentName" class="field-input" placeholder="e.g. Rahul Sharma" required autocomplete="off" autofocus>
+            </div>
+
+            <div class="form-group">
+                <label class="field-label" for="rollNo">Examination Roll Number</label>
+                <input type="text" id="rollNo" class="field-input" placeholder="e.g. GTC-104" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label class="field-label" for="className">Class / Standard</label>
+                <input type="text" id="className" class="field-input" placeholder="e.g. 6th Standard" required autocomplete="off">
+            </div>
+
+            <!-- 🌐 MANDATORY LANGUAGE SELECT DROPDOWN -->
+            <div class="form-group">
+                <label class="field-label" for="examLang">Question Paper Language / भाषा चुनें *</label>
+                <div class="select-wrapper">
+                    <select id="examLang" class="field-select" required>
+                        <option value="" disabled selected>-- Click to Choose Language / भाषा चुनें --</option>
+                        <option value="hi"> हिन्दी (Hindi Medium)</option>
+                        <option value="en"> English (English Medium)</option>
+                    </select>
+                    <span class="select-arrow">▼</span>
+                </div>
+            </div>
+
+            <button type="submit" id="loginBtn" class="btn-submit">
+                <span>Start Examination</span>
+                <span style="font-size: 17px;">🚀</span>
+            </button>
+        </form>
+    </main>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQysEVoQmSS6w_cEeLYK1g95T16cUT5taIdjXfdDLUsOggqFnVMU5GDrl3C3c-Olvt/exec";
+
+        // 🔑 REAL MASTER INVIGILATOR PASSCODE (Code mein directly set kiya gaya hai)
+        const MASTER_RETEST_PASS = "GTC#2000";
+
+        function showNotification(text, duration = 3000) {
+            const toast = document.getElementById("securityToast");
+            if (toast) {
+                toast.textContent = text;
+                toast.style.display = "block";
+                setTimeout(() => { toast.style.display = "none"; }, duration);
+            }
+        }
+
+        function toggleLoading(show, message = "") {
+            const loading = document.getElementById("loadingOverlay");
+            const loadingText = document.getElementById("loadingText");
+            if (loading) {
+                loading.style.display = show ? "flex" : "none";
+                if (message && loadingText) loadingText.textContent = message;
+            }
+        }
+
+        function dismissDangerModal() {
+            const modal = document.getElementById("dangerModal");
+            const passInput = document.getElementById("teacherPassInput");
+            const err = document.getElementById("retestPassError");
+            if (modal) modal.style.display = "none";
+            if (passInput) passInput.value = "";
+            if (err) err.style.display = "none";
+        }
+
+        async function verifyTeacherPassword() {
+            const passInput = document.getElementById("teacherPassInput");
+            const errEl = document.getElementById("retestPassError");
+            const enteredPass = passInput ? passInput.value.trim() : "";
+
+            if (!enteredPass) {
+                if (errEl) {
+                    errEl.textContent = "Please enter the invigilator passcode!";
+                    errEl.style.display = "block";
+                }
+                return;
+            }
+
+            // 🔒 100% STRICT CODE-LEVEL CHECK: Sirf real password match hone par hi unlock hoga
+            if (enteredPass !== MASTER_RETEST_PASS && enteredPass !== "GTC#2000") {
+                if (errEl) {
+                    errEl.textContent = "❌ गलत पासवर्ड! केवल शिक्षक का सही पासवर्ड ही मान्य है।";
+                    errEl.style.display = "block";
+                }
+                if (passInput) passInput.value = "";
+                return;
+            }
+
+            // Sahi password daalne par hi unlock hoga:
+            sessionStorage.setItem("adminPassKey", enteredPass);
+            localStorage.setItem("reattemptGranted", "true");
+            localStorage.removeItem("testSubmitted");
+            localStorage.removeItem("gtc_device_locked_date");
+            dismissDangerModal();
+
+            showNotification("✅ Authorization confirmed! Redirecting to test room...");
+            setTimeout(() => {
+                window.location.replace("test.html");
+            }, 600);
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const nameVal = document.getElementById("studentName").value.trim();
+            const rollVal = document.getElementById("rollNo").value.trim();
+            const classVal = document.getElementById("className").value.trim();
+            const langSelect = document.getElementById("examLang");
+            const chosenLang = langSelect ? langSelect.value.trim() : "";
+
+            if (!nameVal || !rollVal || !classVal) {
+                showNotification("⚠️ Please fill in all candidate details!");
+                return;
+            }
+
+            if (!chosenLang) {
+                showNotification("⚠️ कृपया परीक्षा की भाषा चुनें! / Please select question paper language!");
+                return;
+            }
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const lockedDate = localStorage.getItem("gtc_device_locked_date");
+            const isReattemptGranted = localStorage.getItem("reattemptGranted") === "true";
+
+            localStorage.setItem("name", nameVal);
+            localStorage.setItem("roll", rollVal);
+            localStorage.setItem("class", classVal);
+            localStorage.setItem("temp_roll", rollVal);
+            localStorage.setItem("lang", chosenLang);
+            localStorage.setItem("exam_lang", chosenLang);
+            localStorage.setItem("selected_lang", chosenLang);
+            localStorage.setItem("language", chosenLang);
+
+            // 🔒 Device Lock: If test was already submitted from this phone today, demand password
+            if (lockedDate === todayStr && !isReattemptGranted) {
+                const modal = document.getElementById("dangerModal");
+                const desc = document.getElementById("retestModalDesc");
+                if (desc) {
+                    desc.innerHTML = `<b style="color:#ef4444;">डिवाइस सुरक्षा लॉक:</b> इस फ़ोन से आज का टेस्ट पहले ही सबमिट किया जा चुका है। दोबारा टेस्ट देने के लिए शिक्षक का पासवर्ड अनिवार्य है।`;
+                }
+                if (modal) modal.style.display = "flex";
+                return;
+            }
+
+            toggleLoading(true, "Checking examination eligibility... 🔍");
+
+            const safetyTimeout = setTimeout(() => {
+                toggleLoading(false);
+                window.location.replace("test.html");
+            }, 2500);
+
+            try {
+                // 📡 Google Apps Script Code.gs Form Data Support
+                const formData = new URLSearchParams();
+                formData.append("action", "check");
+                formData.append("roll", rollVal);
+                formData.append("adminPass", "");
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: formData.toString()
+                });
+
+                const res = await response.json();
+                clearTimeout(safetyTimeout);
+                toggleLoading(false);
+
+                if (res.status === "blocked") {
+                    const desc = document.getElementById("retestModalDesc");
+                    if (desc && res.message) {
+                        desc.textContent = res.message;
+                    }
+                    const modal = document.getElementById("dangerModal");
+                    if (modal) modal.style.display = "flex";
+                    return;
+                }
+
+                window.location.replace("test.html");
+
+            } catch (error) {
+                clearTimeout(safetyTimeout);
+                toggleLoading(false);
+                window.location.replace("test.html");
+            }
+        }
+    </script>
+</body>
+</html>

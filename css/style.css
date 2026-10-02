@@ -1,0 +1,368 @@
+/* ========================================================
+GAUTAM TEACHING CENTRE - PREMIUM PORTAL CORE STYLES
+Designed for High-Performance Mobile & Desktop Experience
+Clean, Modern & Professional Light Theme
+======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* STREAMING_CHUNK:Defining root design tokens and light variables... */
+:root {
+--primary: #0284c7;
+--primary-glow: rgba(2, 132, 199, 0.22);
+--primary-deep: #0369a1;
+--accent: #4f46e5;
+--accent-glow: rgba(79, 70, 229, 0.20);
+--bg-light: #f8fafc;
+--surface-glass: #ffffff;
+--surface-card: #f8fafc;
+--border-subtle: #e2e8f0;
+--border-card: #cbd5e1;
+--border-glow: rgba(2, 132, 199, 0.35);
+--text-heading: #0f172a;
+--text-body: #334155;
+--text-muted: #64748b;
+--danger: #ef4444;
+--danger-bg: #fef2f2;
+--warning: #f59e0b;
+--warning-bg: #fffbeb;
+--success: #10b981;
+--success-bg: #ecfdf5;
+}
+
+/* STREAMING_CHUNK:Configuring global layout resets and touch handling... */
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Plus Jakarta Sans', sans-serif;
+-webkit-tap-highlight-color: transparent;
+-webkit-font-smoothing: antialiased;
+}
+
+body {
+background-color: var(--bg-light);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+color: var(--text-heading);
+position: relative;
+overflow-x: hidden;
+padding: 16px;
+touch-action: manipulation;
+}
+
+/* STREAMING_CHUNK:Styling soft ambient glow backdrops... */
+.ambient-glow-1, body::before {
+content: '';
+position: fixed;
+width: 440px;
+height: 440px;
+background: radial-gradient(circle, rgba(199, 210, 254, 0.45) 0%, transparent 70%);
+top: -90px;
+left: -90px;
+border-radius: 50%;
+filter: blur(80px);
+z-index: 0;
+pointer-events: none;
+animation: pulseGlow 7s ease-in-out infinite alternate;
+}
+
+.ambient-glow-2, body::after {
+content: '';
+position: fixed;
+width: 400px;
+height: 400px;
+background: radial-gradient(circle, rgba(186, 230, 253, 0.45) 0%, transparent 70%);
+bottom: -70px;
+right: -70px;
+border-radius: 50%;
+filter: blur(80px);
+z-index: 0;
+pointer-events: none;
+animation: pulseGlow 5.5s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes pulseGlow {
+0% { transform: scale(1) translate(0, 0); opacity: 0.65; }
+100% { transform: scale(1.14) translate(25px, 20px); opacity: 0.95; }
+}
+
+/* STREAMING_CHUNK:Styling hero containers and premium cards... */
+.hero, .hero-container {
+width: 100%;
+max-width: 580px;
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+z-index: 10;
+}
+
+.card, .premium-card, .login-card-container, .auth-container {
+position: relative;
+width: 100%;
+background: var(--surface-glass);
+border: 1.5px solid var(--border-subtle);
+padding: 42px 32px;
+border-radius: 28px;
+text-align: center;
+box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.04);
+overflow: hidden;
+transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+z-index: 10;
+}
+
+.card::before, .premium-card::before, .login-card-container::before, .auth-container::before {
+content: '';
+position: absolute;
+top: 0;
+left: 20%;
+right: 20%;
+height: 3.5px;
+background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+/* STREAMING_CHUNK:Styling brand typography and headings... */
+.brand-title, .brand-heading {
+font-family: 'Outfit', sans-serif;
+font-size: 26px;
+font-weight: 900;
+letter-spacing: 0.8px;
+color: var(--text-heading);
+text-transform: uppercase;
+margin-bottom: 4px;
+line-height: 1.25;
+}
+
+.tagline, .sub-tagline {
+font-size: 13px;
+color: var(--primary);
+font-weight: 700;
+letter-spacing: 1.3px;
+text-transform: uppercase;
+margin-bottom: 26px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+}
+
+.tagline span {
+color: #94a3b8;
+}
+
+/* STREAMING_CHUNK:Styling exam specs 3-box grid... */
+.info-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-bottom: 24px;
+}
+
+.info-item {
+background: var(--surface-card);
+border: 1.5px solid var(--border-subtle);
+border-radius: 18px;
+padding: 16px 8px;
+transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-item:hover, .info-item:active {
+transform: translateY(-3px);
+background: #f0f9ff;
+border-color: #bae6fd;
+box-shadow: 0 10px 22px -8px var(--primary-glow);
+}
+
+.info-item h2 {
+font-family: 'Outfit', sans-serif;
+font-size: 26px;
+font-weight: 800;
+color: var(--text-heading);
+line-height: 1.1;
+margin-bottom: 4px;
+}
+
+.info-item p {
+font-size: 11.5px;
+color: var(--text-muted);
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.6px;
+}
+
+/* STREAMING_CHUNK:Styling platform assessment details box... */
+.platform-details {
+background: #f8fafc;
+border: 1.5px dashed var(--border-card);
+border-radius: 16px;
+padding: 14px 18px;
+margin-bottom: 24px;
+}
+
+.platform-details h3 {
+font-size: 14.5px;
+font-weight: 800;
+color: var(--text-heading);
+margin-bottom: 4px;
+letter-spacing: 0.3px;
+}
+
+.subjects {
+font-size: 12.5px;
+color: var(--primary-deep);
+font-weight: 700;
+letter-spacing: 0.5px;
+}
+
+/* STREAMING_CHUNK:Styling interactive call-to-action buttons... */
+.start-link {
+text-decoration: none;
+display: block;
+width: 100%;
+}
+
+.btn-start, .btn-submit, .btn-verify {
+width: 100%;
+min-height: 52px;
+background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+color: #ffffff;
+border: none;
+padding: 16px 28px;
+border-radius: 16px;
+font-size: 15px;
+font-weight: 800;
+letter-spacing: 0.8px;
+text-transform: uppercase;
+cursor: pointer;
+box-shadow: 0 8px 22px -4px rgba(37, 99, 235, 0.45);
+transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+
+.btn-start:hover, .btn-submit:hover, .btn-verify:hover {
+transform: translateY(-2px);
+box-shadow: 0 12px 26px -4px rgba(37, 99, 235, 0.6);
+}
+
+.btn-start:active, .btn-submit:active, .btn-verify:active {
+transform: translateY(1px);
+}
+
+/* STREAMING_CHUNK:Styling input fields and form elements... */
+.login-form {
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+.input-group, .form-group {
+position: relative;
+width: 100%;
+text-align: left;
+margin-bottom: 18px;
+}
+
+.field-label {
+display: block;
+font-size: 12px;
+font-weight: 700;
+color: #475569;
+text-transform: uppercase;
+letter-spacing: 0.6px;
+margin-bottom: 6px;
+padding-left: 2px;
+}
+
+.login-form input, .field-input, input[type="text"], input[type="password"] {
+width: 100%;
+min-height: 50px;
+padding: 14px 18px;
+background: #ffffff;
+border: 1.5px solid var(--border-card);
+border-radius: 14px;
+font-size: 15px;
+font-weight: 600;
+color: var(--text-heading);
+outline: none;
+transition: all 0.25s ease;
+}
+
+.login-form input:focus, .field-input:focus, input[type="text"]:focus, input[type="password"]:focus {
+border-color: var(--primary);
+box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+}
+
+.login-form input::placeholder, .field-input::placeholder {
+color: #94a3b8;
+font-weight: 500;
+font-size: 14px;
+}
+
+/* STREAMING_CHUNK:Styling security pills, badges and responsive breakpoints... */
+.security-note {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+font-size: 12px;
+color: var(--text-body);
+font-weight: 600;
+margin-bottom: 24px;
+}
+
+.security-note span {
+color: var(--warning);
+}
+
+@media (max-width: 480px) {
+body {
+padding: 12px;
+}
+
+.card, .premium-card, .login-card-container, .auth-container {
+    padding: 32px 20px;
+    border-radius: 24px;
+}
+
+.brand-title, .brand-heading {
+    font-size: 22px;
+}
+
+.tagline, .sub-tagline {
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.info-grid {
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    padding: 12px 6px;
+    border-radius: 14px;
+}
+
+.info-item h2 {
+    font-size: 22px;
+}
+
+.info-item p {
+    font-size: 10px;
+}
+
+.btn-start, .btn-submit, .btn-verify {
+    min-height: 48px;
+    font-size: 14px;
+    border-radius: 14px;
+}
+
+
+}

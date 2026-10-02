@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access Verification | Gautam Teaching Centre</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Path (Linked to css/style.css with fallback) -->
+    <link rel="stylesheet" href="css/style.css" onerror="this.onerror=null;this.href='style.css';">
+
+    <style>
+        /* ☀️ ULTRA-PREMIUM CLEAN LIGHT THEME */
+        :root {
+            --primary: #0284c7;
+            --primary-deep: #0369a1;
+            --primary-glow: rgba(2, 132, 199, 0.25);
+            --accent: #4f46e5;
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --border-subtle: #e2e8f0;
+            --border-focus: #0284c7;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --danger: #ef4444;
+            --danger-bg: #fef2f2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-heading);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 🔮 Ambient Soft Indigo & Sky Glows */
+        .ambient-glow-1 {
+            position: fixed;
+            width: 440px;
+            height: 440px;
+            background: radial-gradient(circle, rgba(199, 210, 254, 0.5) 0%, transparent 70%);
+            top: -90px;
+            left: -90px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: pulseGlow 7s ease-in-out infinite alternate;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(186, 230, 253, 0.5) 0%, transparent 70%);
+            bottom: -70px;
+            right: -70px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: pulseGlow 5s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.65; }
+            100% { transform: scale(1.15) translate(25px, 20px); opacity: 0.95; }
+        }
+
+        /* Main Verification Card */
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            background: var(--surface);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 28px;
+            padding: 42px 32px;
+            text-align: center;
+            box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.04);
+            transition: transform 0.3s ease;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 3.5px;
+            background: linear-gradient(90deg, transparent, var(--warning), transparent);
+        }
+
+        /* Shield / Key Icon Badge */
+        .lock-icon-wrap {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 20px;
+            background: #fffbeb;
+            border: 1.5px solid #fde68a;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            box-shadow: 0 10px 22px -6px rgba(245, 158, 11, 0.3);
+            animation: bounceSoft 3s ease-in-out infinite;
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .auth-container h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .auth-container p.subtitle {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* Input Wrapper with Toggle */
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .gate-input {
+            width: 100%;
+            padding: 16px 48px 16px 20px;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .gate-input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+        }
+
+        .gate-input::placeholder {
+            letter-spacing: 2px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* Eye toggle icon */
+        .toggle-pwd-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .toggle-pwd-btn:hover {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Verify CTA Button */
+        .btn-verify {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-verify:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px -4px rgba(37, 99, 235, 0.6);
+        }
+
+        .btn-verify:active {
+            transform: translateY(1px);
+        }
+
+        /* Shake animation on invalid code */
+        .shake {
+            animation: shakeAnim 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shakeAnim {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        /* Error Notification Card */
+        .error-msg {
+            background: var(--danger-bg);
+            color: #dc2626;
+            font-size: 12.5px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-top: 18px;
+            border: 1px solid #fecaca;
+            display: none;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* Subtle Back Link */
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 12.5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        /* Floating Security Toast */
+        #securityToast {
+            position: fixed;
+            bottom: 24px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(15px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 34px 22px;
+                border-radius: 24px;
+            }
+            .auth-container h3 {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glowing Light Orbs -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Security Toast Notification -->
+    <div id="securityToast">🛡️ Security Protocol: Developer inspection is disabled.</div>
+
+    <main class="auth-container" id="authCard">
+        <!-- Glowing Shield Lock Badge -->
+        <div class="lock-icon-wrap">
+            🔐
+        </div>
+
+        <h3>Access Secured</h3>
+        <p class="subtitle">Please enter your authorized Examination Access Code to proceed to candidate authentication.</p>
+        
+        <div class="input-group">
+            <input type="password" id="gatePassword" class="gate-input" placeholder="ENTER CODE" autocomplete="off" autofocus>
+            <button type="button" class="toggle-pwd-btn" id="togglePwd" title="Show / Hide Password">
+                👁️
+            </button>
+        </div>
+        
+        <button type="button" class="btn-verify" onclick="checkGatePassword()">
+            <span>Verify & Proceed</span>
+            <span style="font-size: 17px;">🚀</span>
+        </button>
+        
+        <div class="error-msg" id="wrongPassError">
+            ⚠️ Invalid Access Code! Please verify with your test invigilator and retry.
+        </div>
+
+        <div>
+            <a href="index.html" class="back-link">← Return to Portal Homepage</a>
+        </div>
+    </main>
+
+    <script>
+        // Security Protections without disruptive alert()
+        function showSecurityNotice(text) {
+            const toast = document.getElementById("securityToast");
+            if (toast) {
+                toast.textContent = text;
+                toast.style.display = "block";
+                setTimeout(() => {
+                    toast.style.display = "none";
+                }, 2200);
+            }
+        }
+
+        document.addEventListener('contextmenu', function(e) { 
+            e.preventDefault(); 
+            showSecurityNotice("🛡️ Security Protocol: Right-click is restricted on test portal."); 
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault(); 
+                showSecurityNotice("🛡️ Security Protocol: Developer Tools are restricted.");
+                return false;
+            }
+        });
+
+        // Toggle Password Visibility
+        const pwdInput = document.getElementById("gatePassword");
+        const toggleBtn = document.getElementById("togglePwd");
+
+        if (toggleBtn && pwdInput) {
+            toggleBtn.addEventListener("click", () => {
+                const isPassword = pwdInput.getAttribute("type") === "password";
+                pwdInput.setAttribute("type", isPassword ? "text" : "password");
+                toggleBtn.textContent = isPassword ? "🙈" : "👁️";
+            });
+        }
+
+        // Verification Logic (Base64 'R0s3Nw==' -> GS77)
+        function checkGatePassword() {
+            const inputField = document.getElementById("gatePassword");
+            const authCard = document.getElementById("authCard");
+            const errorElement = document.getElementById("wrongPassError");
+            const enteredPass = inputField ? inputField.value.trim() : "";
+            
+            if (btoa(enteredPass) === "R0s3Nw==") { 
+                localStorage.setItem("authPassed", "true");
+                sessionStorage.setItem("activeSession", "valid");
+                window.location.replace("login.html"); 
+            } else {
+                if (errorElement) errorElement.style.display = "block";
+                if (authCard) {
+                    authCard.classList.remove("shake");
+                    void authCard.offsetWidth; // Trigger reflow
+                    authCard.classList.add("shake");
+                }
+                if (inputField) {
+                    inputField.value = "";
+                    inputField.focus();
+                }
+            }
+        }
+
+        // Enter Key Listener
+        if (pwdInput) {
+            pwdInput.addEventListener("keyup", function(event) {
+                if (event.key === "Enter") {
+                    checkGatePassword();
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
