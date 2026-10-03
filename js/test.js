@@ -907,11 +907,11 @@ async function submitTest(isCheating = false) {
     
     let totalQuestions = (typeof questions !== 'undefined' && questions.length > 0) ? questions.length : 30;
     let maxPossibleMarks = totalQuestions * 2;
-    let rawScore = (correctCount * 2) - (wrongCount * 0.5);
+    let rawScore = (correctCount * 2) - (wrongCount * 0.25);
     let finalScore = rawScore < 0 ? 0 : rawScore; 
     let percentageVal = maxPossibleMarks > 0 ? Math.round((finalScore / maxPossibleMarks) * 100) : 0;
     let percentageStr = percentageVal + "%";
-    let statusText = isCheating ? "CHEATING DETECTED" : (percentageVal >= 70 ? "PASS" : "FAIL");
+    let statusText = isCheating ? "CHEATING DETECTED" : (percentageVal >= 60 ? "PASS" : "FAIL");
 
     let payload = {
         action: "submit",
