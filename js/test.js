@@ -1,4 +1,4 @@
-let time = 60 * 30; // 30 minutes in seconds
+let time = 60 * 40; // 40 minutes in seconds
 let timerInterval = null;
 let screenWakeLock = null;
 let isProctorWarningActive = false;
@@ -17,7 +17,7 @@ let userAnswers = [];
 let retestAuthorizedKey = "";
 
 // 🔑 REAL MASTER INVIGILATOR PASSCODE
-const MASTER_RETEST_PASS = "GTC@2026";
+const MASTER_RETEST_PASS = "GTC#2000";
 
 // 📹 Real AI Vision & Proctoring Variables
 let proctorMediaStream = null;
